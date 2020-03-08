@@ -24,6 +24,41 @@ const medianOfArrays = function(arr1, arr2) {
 		return arr.splice(start, end);
 	};
 
+	const buildSubArrays = function(
+		arr1,
+		midpoint1,
+		arr2,
+		midpoint2,
+		arr1GoLeft
+	) {
+		// grab left side of array 1
+		// grab right side of array 2
+		if (arr1.length % 2 === 0) {
+			// even number of elements in array
+			if (arr1GoLeft) {
+				subarray1 = subarray(arr1, 0, midpoint1 + 2);
+				subarray2 = subarray(arr2, midpoint2, arr2.length);
+			} else {
+				subarray2 = subarray(arr2, 0, midpoint2 + 2);
+				subarray1 = subarray(arr1, midpoint1, arr1.length);
+			}
+		} else {
+			// odd number of elements in array
+			if (arr1GoLeft) {
+				subarray1 = subarray(arr1, 0, midpoint1 + 1);
+				subarray2 = subarray(arr2, midpoint2, arr2.length);
+			} else {
+				subarray2 = subarray(arr2, 0, midpoint2 + 1);
+				subarray1 = subarray(arr1, midpoint1, arr1.length);
+			}
+		}
+
+		return {
+			subarray1,
+			subarray2
+		};
+	};
+
 	// Start here
 	if (arr1.length != arr2.length) {
 		return null;
@@ -42,37 +77,25 @@ const medianOfArrays = function(arr1, arr2) {
 	let median1 = subarrayMedian(arr1, midpoint1);
 	let median2 = subarrayMedian(arr2, midpoint2);
 
-	let subarray1 = [];
-	let subarray2 = [];
+	let subarrayObj = {};
+
 	if (median1 === median2) {
 		return median1;
 	} else if (median1 > median2) {
 		// grab left side of array 1
 		// grab right side of array 2
-		if (arr1.length % 2 === 0) {
-			// even number of elements in array
-			subarray1 = subarray(arr1, 0, midpoint1 + 2);
-			subarray2 = subarray(arr2, midpoint2, arr2.length);
-		} else {
-			// odd number of elements in array
-			subarray1 = subarray(arr1, 0, midpoint1 + 1);
-			subarray2 = subarray(arr2, midpoint2, arr2.length);
-		}
+		subarrayObj = {
+			...buildSubArrays(arr1, midpoint1, arr2, midpoint2, true)
+		};
 	} else {
 		// grab left side of array 2
 		// grab right side of array 1
-		if (arr1.length % 2 === 0) {
-			// even number of elements in array
-			subarray2 = subarray(arr2, 0, midpoint2 + 2);
-			subarray1 = subarray(arr1, midpoint1, arr1.length);
-		} else {
-			// odd number of elements in array
-			subarray2 = subarray(arr2, 0, midpoint2 + 1);
-			subarray1 = subarray(arr1, midpoint1, arr1.length);
-		}
+		subarrayObj = {
+			...buildSubArrays(arr1, midpoint1, arr2, midpoint2, false)
+		};
 	}
 
-	return medianOfArrays(subarray1, subarray2);
+	return medianOfArrays(subarrayObj.subarray1, subarrayObj.subarray2);
 };
 
 module.exports = { medianOfArrays };
