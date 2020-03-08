@@ -4,6 +4,7 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
+		"test-median": "jest medianOfArrays.test.js",
 		"test": "jest --coverage"
 	},
 	"author": "",

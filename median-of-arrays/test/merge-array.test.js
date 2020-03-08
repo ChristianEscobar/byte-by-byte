@@ -1,4 +1,4 @@
-const { mergeArrays } = require('../merge-array.js');
+const { mergeArrays } = require('../merge-arrays.js/index.js');
 
 describe('merge-array.js', () => {
 	it('should merge two arrays with distinct values', () => {
