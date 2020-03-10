@@ -24,32 +24,29 @@ const medianOfArrays = function(arr1, arr2) {
 		return arr.splice(start, end);
 	};
 
-	const buildSubArrays = function(
-		arr1,
-		midpoint1,
-		arr2,
-		midpoint2,
-		arr1GoLeft
-	) {
+	/**
+	 * Each array object contains the array as well as the midpoint
+	 */
+	const buildSubArrays = function(arr1Obj, arr2Obj, arr1GoLeft) {
 		// grab left side of array 1
 		// grab right side of array 2
-		if (arr1.length % 2 === 0) {
+		if (arr1Obj.arr.length % 2 === 0) {
 			// even number of elements in array
 			if (arr1GoLeft) {
-				subarray1 = subarray(arr1, 0, midpoint1 + 2);
-				subarray2 = subarray(arr2, midpoint2, arr2.length);
+				subarray1 = subarray(arr1Obj.arr, 0, arr1Obj.midpoint + 2);
+				subarray2 = subarray(arr2Obj.arr, arr2Obj.midpoint, arr2Obj.arr.length);
 			} else {
-				subarray2 = subarray(arr2, 0, midpoint2 + 2);
-				subarray1 = subarray(arr1, midpoint1, arr1.length);
+				subarray2 = subarray(arr2Obj.arr, 0, arr2Obj.midpoint + 2);
+				subarray1 = subarray(arr1Obj.arr, arr1Obj.midpoint, arr1Obj.arr.length);
 			}
 		} else {
 			// odd number of elements in array
 			if (arr1GoLeft) {
-				subarray1 = subarray(arr1, 0, midpoint1 + 1);
-				subarray2 = subarray(arr2, midpoint2, arr2.length);
+				subarray1 = subarray(arr1Obj.arr, 0, arr1Obj.midpoint + 1);
+				subarray2 = subarray(arr2Obj.arr, arr2Obj.midpoint, arr2Obj.arr.length);
 			} else {
-				subarray2 = subarray(arr2, 0, midpoint2 + 1);
-				subarray1 = subarray(arr1, midpoint1, arr1.length);
+				subarray2 = subarray(arr2Obj.arr, 0, arr2Obj.midpoint + 1);
+				subarray1 = subarray(arr1Obj.arr, arr1Obj.midpoint, arr1.length);
 			}
 		}
 
@@ -85,13 +82,21 @@ const medianOfArrays = function(arr1, arr2) {
 		// grab left side of array 1
 		// grab right side of array 2
 		subarrayObj = {
-			...buildSubArrays(arr1, midpoint1, arr2, midpoint2, true)
+			...buildSubArrays(
+				{ arr: arr1, midpoint: midpoint1 },
+				{ arr: arr2, midpoint: midpoint2 },
+				true
+			)
 		};
 	} else {
 		// grab left side of array 2
 		// grab right side of array 1
 		subarrayObj = {
-			...buildSubArrays(arr1, midpoint1, arr2, midpoint2, false)
+			...buildSubArrays(
+				{ arr: arr1, midpoint: midpoint1 },
+				{ arr: arr2, midpoint: midpoint2 },
+				false
+			)
 		};
 	}
 
