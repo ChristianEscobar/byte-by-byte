@@ -11,14 +11,15 @@ const consecutive = arr => {
 
 	arr.sort();
 	arr.forEach((elem, idx) => {
+		let prevElem = arr[idx - 1];
 		resultKey = idx;
 		if (idx === 0) {
 			curSet.add(elem);
 		} else {
-			if (elem - arr[idx - 1] === 0 || elem - arr[idx - 1] === 1) {
+			if (elem - prevElem === 0 || elem - prevElem === 1) {
 				curSet.add(elem);
 			} else {
-				result[resultKey] = Array.from(curSet);
+				result[resultKey] = createResultObject(curSet);
 				curSet = new Set();
 				curSet.add(elem);
 			}
@@ -27,10 +28,18 @@ const consecutive = arr => {
 
 	// Add any remaining Set
 	if (curSet.size > 0) {
-		result[++resultKey] = Array.from(curSet);
+		result[++resultKey] = createResultObject(curSet);
 	}
 
-	console.log(result);
+	return result;
+};
+
+const createResultObject = set => {
+	const arr = Array.from(set);
+	return {
+		arr,
+		len: arr.length
+	};
 };
 
 module.exports = { consecutive };
